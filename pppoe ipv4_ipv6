@@ -1,3 +1,57 @@
+IPOE配置如下：
+interface Loopback10010
+ description HD-test 
+ vrf IP_VODData
+ ipv4 address 10.184.0.1 255.255.192.0
+!
+pool vrf IP_VODData ipv4 IPoEv4
+ network 10.184.0.0/18
+ exclude 10.184.0.1 0.0.0.0
+!
+dhcp ipv4
+ profile IPoEv4 server
+  allow-move
+   lease 1
+   match vrf IP_VODData
+   pool IPoEv4
+   dns-server 172.16.237.200
+   default-router 10.184.0.1
+  !
+ interface Bundle-Ether1000.400 server profile IPoEv4
+
+dynamic-template
+ type ipsubscriber JSW
+  vrf IP_VODData
+  ipv4 unnumbered Loopback10010
+！
+class-map type control subscriber match-all dhcp
+ match protocol dhcpv4 
+ end-class-map
+!
+policy-map type control subscriber jsw
+ event session-start match-all
+  class type control subscriber dhcp do-until-failure
+   1 activate dynamic-template  JSW
+  ! 
+ ! 
+ end-policy-map
+! 
+
+interface Bundle-Ether1000.2000
+ vrf IP_VODData
+ ipv4 point-to-point
+ ipv4 unnumbered Loopback184
+ arp learning disable
+ service-policy type control subscriber JSW-IPoE-1
+ ipsubscriber ipv4 l2-connected
+  initiator dhcp
+ !
+ encapsulation ambiguous dot1q 2000-2999 second-dot1q any
+!
+
+
+PPPOE配置如下：
+
 pool vrf default ipv4 test001
  network 10.49.128.0/24
 !
