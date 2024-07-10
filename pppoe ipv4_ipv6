@@ -1,0 +1,56 @@
+pool vrf default ipv4 test001
+ network 10.49.128.0/24
+!
+pool vrf default ipv6 qianzhui
+ prefix-length 64
+ network 2401:100:200::/60
+!
+pool vrf default ipv6 POOL_V6_LAN_PD_PPPOE
+ prefix-length 56
+ network 2403:200:300::/40
+!
+
+dynamic-template
+ type ppp PPPOE_TEMPLATE
+  ppp authentication chap pap
+  keepalive 30 3
+  ppp ipcp dns 45.115.244.1 45.115.244.2
+  ppp ipcp mask 255.255.255.255
+  ppp ipcp peer-address pool test001
+  accounting aaa list default type session
+  ipv4 unnumbered Loopback0
+  ipv6 nd framed-prefix-pool qianzhui
+  ipv6 enable
+  dhcpv6 delegated-prefix-pool POOL_V6_LAN_PD_PPPOE
+ !
+dhcp ipv6
+ profile AA server
+  dns-server 400:3200::1 2400:3200:baba::1
+  prefix-pool POOL_V6_LAN_PD_PPPOE
+ !
+ interface subscriber-pppoe profile AA  ##将该模版应用在subscriber-pppoe全局下
+
+ class-map type control subscriber match-any ipv6_test
+ match protocol dhcpv6 ppp 
+ end-class-map
+! 
+policy-map type control subscriber ipv6_ipv4
+ event session-start match-all
+  class type control subscriber ipv6_test do-all
+   1 activate dynamic-template PPPOE_TEMPLATE
+  ! 
+ ! 
+ event session-activate match-all
+  class type control subscriber ipv6_test do-until-failure
+   10 authenticate aaa list default
+  ! 
+ ! 
+ end-policy-map
+! 
+interface TenGigE0/3/1/0.444
+ service-policy type control subscriber ipv6_ipv4
+ pppoe enable bba-group VLAN
+ encapsulation dot1q 444
+!
+
+ 
