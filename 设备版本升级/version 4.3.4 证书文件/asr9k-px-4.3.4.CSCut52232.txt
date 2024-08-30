@@ -1,0 +1,82 @@
+# Last Modified Date: 07/07/15-16:51:54
+################################################################################
+#
+# Readme for SMU asr9k-px-4.3.4.CSCut52232.pie
+#
+# Copyright (c) 2015 by Cisco Systems, Inc.
+# All rights reserved.
+#
+################################################################################
+
+Date Generated:          Mon Jul  6 17:28:18 PDT 2015
+
+Owner:                   sathchin
+
+Name:                    asr9k-px-4.3.4.CSCut52232.pie
+
+Package(s):              iosxr-infra-4.3.4.CSCut52232
+
+Compressed File Size:    289740 bytes
+
+Uncompressed File Size:  730005 bytes
+
+DDTS:                    CSCut52232
+
+Description:             Production SMU for SAM post Oct 2015.
+
+On-the-Box Name:         asr9k-px-4.3.4.CSCut52232-1.0.0
+
+Pre-requisites:          None
+
+Supercedes:              
+          asr9k-px-4.3.4.CSCut30136   Full
+
+Incompatibility:         
+
+Restart Type:            dependent
+
+Cards:                   None
+
+MD5:                     f62959f65110ceeeb58accb1a87d17fc
+
+SMU Install Impact:      Hitless;
+
+**********************************************************
+CONSTITUENT SMU DETAILS:
+
+Name:                    iosxr-infra-4.3.4.CSCut52232
+Pre-requisites:          
+Incompatibility:         
+Restart Type:            dependent
+Cards:                   
+MD5:                     f62959f65110ceeeb58accb1a87d17fc
+
+CSS Certificate:
+    Version: 3
+    Serial Number: 06:
+    Issuing Algorithm: MD5withRSA
+    Issued By: EA =<16> jamohamm@cisco.com, CN = CSS Certificate Authority, OU = CSG, O = Cisco Systems, L = San Jose, ST = CA, C = US
+    Not Before: Oct 09, 2014 10:33:52 GMT
+    Not After: Oct 06, 2024 10:33:52 GMT
+    Subject Name: CN = Release code sign certificate
+    
+
+SMU Install Questions:
+----------------------
+1- Console/error messages during SMU activation/deactivation?  Please specify the safe messages to ignore
+
+RP/0/RSP0/CPU0:Apr 14 10:02:21.974 : sam_server[384]: %SECURITY-SAM-4-SYSDB_INTEGRITY : Cannot guarantee the integrity of SAM SysDB name space, SAM internal tables had been discarded, and will try to recover from backup files.
+
+Its a safe message and can be ignored as it will be recovered from backup.
+
+2- Is SMU activation/deactivation traffic impacting?
+No
+
+3- Are there any side effects to this SMU that require workaround? (for example AAA SMU requiring exit out of current session and reconnecting after install).  If so what?
+None
+
+SMU Caveats:
+SMU Install MOP – CSS to Abraxas Migration - URL:
+http://www.cisco.com/c/en/us/td/docs/routers/technotes/MOP-CSS-to-Abraxas.html
+
+ 
